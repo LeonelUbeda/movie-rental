@@ -1,7 +1,7 @@
 import User from '../models/user'
 import jwt from 'jsonwebtoken'
 
-export async function createSession({email, password}){
+const createSession = async ({email, password}) => {
     try {
         const user = await User.findOne({where: {email}})
         if (!user){
