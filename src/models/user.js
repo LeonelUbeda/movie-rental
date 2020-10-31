@@ -1,48 +1,47 @@
-import { model, Schema } from 'mongoose'
+import { DataTypes } from "sequelize";
+import database from '../database'
+
 import bcrypt from 'bcrypt'
 
-const userSchema = new Schema({
+const User = database.define('User', {
     username: {
-        unique: true,
-        type: String,
-        required: true,
+        type: DataTypes.STRING(50),
+        allowNull: false
     },
     firstName: {
-        type: String,
-        required: true
+        type: DataTypes.STRING(50),
+        allowNull: false
     },
     lastName: {
-        type: String,
-        required: true
+        type: DataTypes.STRING(50),
+        allowNull: false
     },
     email: {
-        type: String,
-        required: true
+        type: DataTypes.STRING(100),
+        allowNull: false
     },
     password: {
-        type: String,
-        require: true
-    },
-    modified_at: {
-        type: Date
-    },
-    registered_at: {
-        type: Date,
+        type: DataTypes.STRING(100),
+        allowNull: false
     }
+}, {
+    hooks: {
+        beforeSave: async (instance, options) => {
+            if(instance.changed('password')){
+                const salt = await bcrypt.genSalt(10)
+                instance.password = await bcrypt.hash(instance.password, salt)
+            }
+        }
+    },
+
+
 })
 
-userSchema.pre('save', async function (){
-    if(this.isModified('password')){
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(this.password, salt)
-        this.password = hash
-    }
-})
-
-userSchema.methods.comparePassword = async function (password){
+User.prototype.comparePassword = async function (password){
     return await bcrypt.compare(password, this.password)
 }
 
 
 
-export default model('User', userSchema)
+
+export default User

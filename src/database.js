@@ -1,10 +1,5 @@
-import mongoose from 'mongoose'
+import {Sequelize} from 'sequelize'
 
-mongoose.connect(process.env.DATABASE_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-})
-    .then(() => console.log('Connected to database'))
-    .catch(err => console.log(err))
+
+export default new Sequelize(process.env.DATABASE_URI)
 

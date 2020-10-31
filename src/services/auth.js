@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 export async function createSession({email, password}){
     try {
-        const user = await User.findOne({email})
+        const user = await User.findOne({where: {email}})
         if (!user){
             throw new Error('Incorrect credentials')
         }
@@ -13,8 +13,9 @@ export async function createSession({email, password}){
             throw new Error('Incorrect credentials')
         }
         const token = await jwt.sign({
-            userId: user._id,
-            email: user.email
+            userId: user.id,
+            email: user.email,
+            username: user.username
         }, process.env.SUPER_SECRET, {expiresIn: process.env.JWT_EXPIRE_TIME})
 
         return token

@@ -1,9 +1,15 @@
+import { Op } from 'sequelize'
 import User from '../models/user'
 
 async function createUser({username, firstName, lastName, email, password}){
     try {
         const findUser = await User.findOne({
-            $or: [{username}, {email}]
+            where: {
+                [Op.or]:[
+                    {email},
+                    {username}
+                ]
+            }
         })
         if(findUser){
             if (findUser.email === email){
@@ -15,7 +21,7 @@ async function createUser({username, firstName, lastName, email, password}){
                 throw new Error('Username is already in use')
             }
         }
-        const user = new User({
+        const user = User.build({
             username,
             firstName,
             lastName,

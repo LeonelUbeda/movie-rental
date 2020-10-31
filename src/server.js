@@ -1,5 +1,5 @@
 import './loadEnv'
-import './database'
+import db from './database'
 import express from 'express'
 
 /* importing middlewares */
