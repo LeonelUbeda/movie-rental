@@ -5,16 +5,17 @@ import database from '../database'
 
 const Movie = database.define('Movie', {
     title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false
     },
     description: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(250),
+        allowNull: true
     },
     stock: {
         type: DataTypes.INTEGER,
-        default: 0
+        allowNull: true,
+        defaultValue: 0
     },
     rentalPrice: {
         type: DataTypes.FLOAT,
@@ -22,7 +23,7 @@ const Movie = database.define('Movie', {
     },
     likes: {
         type: DataTypes.INTEGER,
-        default: 0
+        defaultValue: 0
     },
     salePrice: {
         type: DataTypes.FLOAT,
@@ -30,7 +31,7 @@ const Movie = database.define('Movie', {
     },
     availability: {
         type: DataTypes.BOOLEAN,
-        default: true
+        defaultValue: true
     }
 })
 
