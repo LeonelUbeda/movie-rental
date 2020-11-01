@@ -15,7 +15,8 @@ const createSession = async ({email, password}) => {
         const token = await jwt.sign({
             userId: user.id,
             email: user.email,
-            username: user.username
+            username: user.username,
+            isAdmin: user.isAdmin
         }, process.env.SUPER_SECRET, {expiresIn: process.env.JWT_EXPIRE_TIME})
 
         return token
