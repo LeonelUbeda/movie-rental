@@ -23,6 +23,11 @@ const User = database.define('User', {
     password: {
         type: DataTypes.STRING(100),
         allowNull: false
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
     }
 }, {
     hooks: {
