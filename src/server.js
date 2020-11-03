@@ -3,11 +3,11 @@ import db from './database'
 import express from 'express'
 
 /* importing middlewares */
-import sessionMiddlewares from './middlewares/session'
+import sessionMiddlewares from './middlewares/sessionMiddleware'
 
 /* importing routes */
-import authRoutes from './routes/auth'
-import movieRoutes from './routes/movie'
+import authRoutes from './routes/authRoute'
+import movieRoutes from './routes/movieRoute'
 // db.sync({force: true})
 const app = express()
 app.use(express.json())

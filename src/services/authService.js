@@ -1,9 +1,9 @@
-import User from '../models/user'
+import UserModel from '../models/userModel'
 import jwt from 'jsonwebtoken'
 
 const createSession = async ({email, password}) => {
     try {
-        const user = await User.findOne({where: {email}})
+        const user = await UserModel.findOne({where: {email}})
         if (!user){
             throw new Error('Incorrect credentials')
         }

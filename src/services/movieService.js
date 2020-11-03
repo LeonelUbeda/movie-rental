@@ -1,9 +1,9 @@
-import Movie from "../models/movie"
+import MovieModel from "../models/movieModel"
 
 
 const createMovie = async ({title, description, rentalPrice, salePrice, availability}) => {
     try{
-        const movie = Movie.build({
+        const movie = MovieModel.build({
             title,
             description,
             rentalPrice,
@@ -50,7 +50,7 @@ const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'
         ...(filters && {filters})
     }
     console.log(query)
-    const movies = await Movie.findAll(query)
+    const movies = await MovieModel.findAll(query)
     return movies
 }
 

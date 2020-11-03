@@ -1,5 +1,5 @@
-import movieValidator from '../validators/movie'
-import movieService from '../services/movie'
+import movieValidator from '../validators/movieValidator'
+import movieService from '../services/movieService'
 import {filterPropertiesByPermissions} from "../permissions";
 
 const createMovie = async (req, res) => {

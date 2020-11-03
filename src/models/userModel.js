@@ -3,7 +3,7 @@ import database from '../database'
 
 import bcrypt from 'bcrypt'
 
-const User = database.define('User', {
+const UserModel = database.define('User', {
     username: {
         type: DataTypes.STRING(50),
         allowNull: false
@@ -41,11 +41,11 @@ const User = database.define('User', {
 
 })
 
-User.prototype.comparePassword = async function (password){
+UserModel.prototype.comparePassword = async function (password){
     return await bcrypt.compare(password, this.password)
 }
 
 
 
 
-export default User
+export default UserModel

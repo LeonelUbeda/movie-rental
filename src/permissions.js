@@ -1,5 +1,6 @@
-import Movie from "./models/movie"
-import User from "./models/user"
+import MovieModel from "./models/movieModel"
+import UserModel from "./models/userModel"
+import UserMovieLikeModel from "./models/userMovieLikeModel";
 
 
 export const PERMISSION_TYPES = {
@@ -9,14 +10,15 @@ export const PERMISSION_TYPES = {
 }
 
 export const ENTITIES = {
-    MOVIE: Movie.tableName,
-    USER: User.tableName
+    MOVIE: MovieModel.tableName,
+    USER: UserModel.tableName,
+
 }
 
 //if action permission is not specified, default is false
 export const ACTION = {
     READ: "read",
-    WRITE: "write",
+    INSERT: "write",
     UPDATE: "update",
     DELETE: "delete",
     OTHERS: "others"
@@ -29,13 +31,13 @@ export const PERMISSIONS = {
         models: {
             [ENTITIES.MOVIE]: {
                 [ACTION.READ]: "*",
-                [ACTION.WRITE]: "*",
+                [ACTION.INSERT]: "*",
                 [ACTION.UPDATE]: "*",
                 [ACTION.DELETE]: true
             },
             [ENTITIES.USER]: {
                 [ACTION.READ]: "*",
-                [ACTION.WRITE]: "*",
+                [ACTION.INSERT]: "*",
                 [ACTION.UPDATE]: "*",
                 [ACTION.DELETE]: true,
                 [ACTION.OTHERS]: true
@@ -49,8 +51,8 @@ export const PERMISSIONS = {
                 [ACTION.READ]: ["title", "description", "stock", "rentalPrice", "salePrice", "likes"],
             },
             [ENTITIES.USER]: {
-                read: ["username", "email", "firstName", "lastName"],
-                update: ["password", "firstName", "lastName"],
+                [ACTION.READ]: ["username", "email", "firstName", "lastName"],
+                [ACTION.UPDATE]: ["password", "firstName", "lastName"],
             }
         }
     },

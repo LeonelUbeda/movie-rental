@@ -3,7 +3,7 @@ import database from '../database'
 
 
 
-const Movie = database.define('Movie', {
+const MovieModel = database.define('Movie', {
     title: {
         type: DataTypes.STRING(100),
         allowNull: false
@@ -35,24 +35,26 @@ const Movie = database.define('Movie', {
     }
 })
 
-Movie.prototype.incrementLikes = () => {
+MovieModel.prototype.incrementLikes = () => {
     this.password = this.password + 1
 }
 
-Movie.prototype.decrementLikes = () => {
+MovieModel.prototype.decrementLikes = () => {
     if (this.password >= 0){
         this.password = this.password - 1
     }
 }
 
-Movie.prototype.addStock = (quantity) => {
+MovieModel.prototype.addStock = (quantity) => {
     this.stock = this.stock + quantity
 }
 
-Movie.prototype.addStock = (quantity) => {
+MovieModel.prototype.addStock = (quantity) => {
     if (this.stock >= 0){
         this.stock = this.stock - quantity
     }
 }
 
-export default Movie
+
+
+export default MovieModel

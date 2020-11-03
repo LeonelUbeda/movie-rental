@@ -1,9 +1,9 @@
 import { Op } from 'sequelize'
-import User from '../models/user'
+import UserModel from '../models/userModel'
 
 async function createUser({username, firstName, lastName, email, password, role}){
     try {
-        const findUser = await User.findOne({
+        const findUser = await UserModel.findOne({
             where: {
                 [Op.or]:[
                     {email},
@@ -21,7 +21,7 @@ async function createUser({username, firstName, lastName, email, password, role}
                 throw new Error('Username is already in use')
             }
         }
-        const user = User.build({
+        const user = UserModel.build({
             username,
             firstName,
             lastName,
