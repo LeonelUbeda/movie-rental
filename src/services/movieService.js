@@ -1,4 +1,5 @@
 import MovieModel from "../models/movieModel"
+import UserModel from "../models/userModel";
 
 
 const createMovie = async ({title, description, rentalPrice, salePrice, availability}) => {
@@ -50,8 +51,32 @@ const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'
         ...(filters && {filters})
     }
     console.log(query)
-    const movies = await MovieModel.findAll(query)
-    return movies
+
+    return await MovieModel.findAll(query)
 }
 
-export default {createMovie, getMovies}
+
+const likeMovie = async (movieId, userId, action="add") => {
+    try{
+        const user = await UserModel.findOne({where: {id: userId}})
+        const movie = await MovieModel.findOne({where: {id: movieId}})
+        if (user === null){
+            throw new Error("User not found")
+        }
+        if (movie === null){
+            throw new Error("Movie not found")
+        }
+        const change = action === "add" ? await user.addMovie(movie) : await user.removeMovie(movie)
+        console.log(change)
+        //if perform removeMovie, change is integer
+        //if perform addMovie, change can be object or undefined
+        return !(change === 'undefined' || change === 0)
+    }catch (e){
+        throw e
+    }
+}
+
+likeMovie.ADD = "add"
+likeMovie.REMOVE = "remove"
+
+export default {createMovie, getMovies, likeMovie}

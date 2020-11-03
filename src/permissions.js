@@ -12,7 +12,7 @@ export const PERMISSION_TYPES = {
 export const ENTITIES = {
     MOVIE: MovieModel.tableName,
     USER: UserModel.tableName,
-
+    USERMOVIELIKE: UserMovieLikeModel.tableName
 }
 
 //if action permission is not specified, default is false
@@ -26,7 +26,7 @@ export const ACTION = {
 
 
 export const PERMISSIONS = {
-    [PERMISSION_TYPES.ADMIN]:{
+    [PERMISSION_TYPES.ADMIN]: {
         name: "admin",
         models: {
             [ENTITIES.MOVIE]: {
@@ -41,6 +41,11 @@ export const PERMISSIONS = {
                 [ACTION.UPDATE]: "*",
                 [ACTION.DELETE]: true,
                 [ACTION.OTHERS]: true
+            },
+            [ENTITIES.USERMOVIELIKE]: {
+                // Its * because a like is linked if or if to the user's session, it does not receive any field
+                [ACTION.UPDATE]: "*",
+                [ACTION.DELETE]: "*"
             }
         }
     },
@@ -53,6 +58,11 @@ export const PERMISSIONS = {
             [ENTITIES.USER]: {
                 [ACTION.READ]: ["username", "email", "firstName", "lastName"],
                 [ACTION.UPDATE]: ["password", "firstName", "lastName"],
+            },
+            [ENTITIES.USERMOVIELIKE]: {
+                // It is true because a like is linked if or if to the user's session, it does not receive any field
+                [ACTION.UPDATE]: "*",
+                [ACTION.DELETE]: "*"
             }
         }
     },

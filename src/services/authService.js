@@ -14,7 +14,7 @@ const createSession = async ({email, password}) => {
         }
 
         const token = await jwt.sign({
-            userId: user.id,
+            id: user.id,
             email: user.email,
             username: user.username,
             role: user.role

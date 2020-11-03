@@ -38,4 +38,29 @@ const getMovies = async (req, res) => {
     res.json(movies)
 }
 
-export default {createMovie, getMovies}
+
+const likeMovie = async (req, res) => {
+    const { movieId } = req.params
+    const userId = req.user.id
+    try{
+        const created = await movieService.likeMovie(movieId, userId, movieService.likeMovie.ADD)
+        res.status(created ? 204 : 304)
+        res.send('Nice')
+    }catch (e){
+        console.log(e.message)
+    }
+}
+
+const removelikeMovie = async (req, res) => {
+    const { movieId } = req.params
+    const userId = req.user.id
+    try{
+        const created = await movieService.likeMovie(movieId, userId, movieService.likeMovie.REMOVE)
+        res.status(created ? 204 : 304)
+        res.send('Nice')
+    }catch (e){
+        console.log(e.message)
+    }
+}
+
+export default {createMovie, getMovies, likeMovie, removelikeMovie}
