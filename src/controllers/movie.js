@@ -1,5 +1,6 @@
 import movieValidator from '../validators/movie'
 import movieService from '../services/movie'
+import {filterPropertiesByPermissions} from "../permissions";
 
 const createMovie = async (req, res) => {
     const { value , error } = movieValidator.validate(req.body, {abortEarly: false})
@@ -30,11 +31,10 @@ function handlePagination(query, limitDefault= 10, pageDefault = 1){
 
 
 const getMovies = async (req, res) => {
-    function getSerializer(){
-
-    }
     const { limit, offset } = handlePagination(req.query)
-    const movies = await movieService.getMovies({limit, offset})
+
+    let movies = await movieService.getMovies({limit, offset})
+    movies = filterPropertiesByPermissions(movies, req.user.allowedFields)
     res.json(movies)
 }
 

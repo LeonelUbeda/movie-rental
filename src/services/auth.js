@@ -12,11 +12,12 @@ const createSession = async ({email, password}) => {
         if (!passwordIsValid){
             throw new Error('Incorrect credentials')
         }
+
         const token = await jwt.sign({
             userId: user.id,
             email: user.email,
             username: user.username,
-            isAdmin: user.isAdmin
+            role: user.role
         }, process.env.SUPER_SECRET, {expiresIn: process.env.JWT_EXPIRE_TIME})
 
         return token

@@ -24,10 +24,9 @@ const User = database.define('User', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    isAdmin: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
+    role: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
     }
 }, {
     hooks: {

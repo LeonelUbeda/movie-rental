@@ -1,7 +1,7 @@
 import { Op } from 'sequelize'
 import User from '../models/user'
 
-async function createUser({username, firstName, lastName, email, password}){
+async function createUser({username, firstName, lastName, email, password, role}){
     try {
         const findUser = await User.findOne({
             where: {
@@ -26,7 +26,8 @@ async function createUser({username, firstName, lastName, email, password}){
             firstName,
             lastName,
             email,
-            password
+            password,
+            role
         })
         await user.save()
         return user

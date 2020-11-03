@@ -9,7 +9,8 @@ const userSchema = Joi.object({
     password: Joi.string()
         .pattern(new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))
         .required(),
-
+    role: Joi.string()
+        .max(30),
     firstName: Joi.string()
         .alphanum()
         .max(50)
