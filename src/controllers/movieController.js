@@ -3,18 +3,24 @@ import movieService from '../services/movieService'
 import {filterPropertiesByPermissions} from "../permissions";
 
 const createMovie = async (req, res) => {
-    const { value , error } = movieValidator.validate(req.body, {abortEarly: false})
-    console.log(value)
-    if (error){
+
+    const data = filterPropertiesByPermissions(req.body, req.user.allowedFields)
+    // If the user does not have permission to modify a field and that field is required, the default value of the validator is used
+    // for example, default value for movie.availability is true
+    const { value , error } = movieValidator.validate(data, {abortEarly: false})
+
+    if (!error){
+        try{
+            const movie = await movieService.createMovie(value)
+            res.json(movie)
+        }catch (e){
+            res.status(400).json({error: e.message})
+        }
+    }else{
         console.log("error", error.details)
-        res.status(400).json({error: "error"})
+        res.status(400).json({error: error.details.map(e => e.message)})
     }
-    try{
-        const movie = await movieService.createMovie(value)
-        res.json(movie)
-    }catch (e){
-        res.status(400).json({error: e.message})
-    }
+
 }
 
 function handlePagination(query, limitDefault= 10, pageDefault = 1){

@@ -57,9 +57,10 @@ const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'
 
 
 const likeMovie = async (movieId, userId, action="add") => {
+    // TODO: improve error handling
     const user = await UserModel.findOne({where: {id: userId}})
     const movie = await MovieModel.findOne({where: {id: movieId}})
-    // TODO: improve error handling
+
     if (user === null){
         throw new Error("User not found")
     }
@@ -67,7 +68,6 @@ const likeMovie = async (movieId, userId, action="add") => {
         throw new Error("Movie not found")
     }
     const change = action === "add" ? await user.addMovie(movie) : await user.removeMovie(movie)
-    console.log(change)
     //if perform removeMovie, change is integer
     //if perform addMovie, change can be object or undefined
     return !(change === 'undefined' || change === 0)
