@@ -80,7 +80,46 @@ const createOrTotalUpdate = async (req, res) => {
 
 }
 
-const partialUpdate = async (req, res) => {
+const partialMovieUpdate = async (req, res) => {
+    const { movieId } = req.params
+
+    try{
+        const data = filterPropertiesByPermissions(req.body, req.user.allowedFields)
+
+        //If the user does not send any data with which he can operate
+        if (Object.keys(data).length === 0){
+            // TODO: Make a message for example: "Valid fields: ["title"]
+            return res.status(400).json({message: ERROR.BAD_REQUEST})
+        }
+
+        //If we have data, let's validate the request data
+        let errors = []
+        for (let prop in data){
+            //validating each prop of data object
+            const { error: validationError } = schema[prop]?.validate(data[prop])
+            if (validationError){
+                errors.push(...validationError.details.map(e => e.message))
+            }
+        }
+        if (errors.length > 0){
+            return res.status(400).json({message: ERROR.BAD_REQUEST, errors})
+        }
+
+        //if data from user is correct...
+        let { error } = await movieService.updateMovie(movieId, data)
+        if (error){
+            return res.status(404).json({message: error})
+        }
+        return res.status(204).send()
+
+
+    }catch (e) {
+        return res.send(500).json({message: ERROR.SERVER_ERROR})
+    }
+
+
+
+
 
 }
 
@@ -115,4 +154,4 @@ const removeLikeMovie = async (req, res) => {
     }
 }
 
-export default {createMovie, getMovies, getMovie, likeMovie, removeLikeMovie}
+export default {createMovie, getMovies, getMovie, partialMovieUpdate, likeMovie, removeLikeMovie}

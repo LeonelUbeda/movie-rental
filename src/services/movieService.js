@@ -56,6 +56,13 @@ const createMovie = async ({title, description, rentalPrice, salePrice, availabi
 
 }
 
+const updateMovie = async (id, newData) => {
+    let { error, value: movie } = await getMovie(id)
+    if (error){
+        return error
+    }
+    return await movie.update(newData)
+}
 
 
 const likeMovie = async (movieId, userId, action="add") => {
@@ -80,4 +87,4 @@ const likeMovie = async (movieId, userId, action="add") => {
 likeMovie.ADD = "add"
 likeMovie.REMOVE = "remove"
 
-export default {createMovie, getMovies, getMovie, likeMovie}
+export default {createMovie, getMovies, getMovie, updateMovie, likeMovie}

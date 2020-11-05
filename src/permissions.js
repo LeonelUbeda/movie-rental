@@ -113,7 +113,9 @@ export const filterPropertiesByPermissions = (elements, allowedFields) => {
     }else{
         let serializedElement = {}
         for (const field of allowedFields){
-            serializedElement[field] = elements[field]
+            if (elements[field]){
+                serializedElement[field] = elements[field]
+            }
         }
         return serializedElement
     }
