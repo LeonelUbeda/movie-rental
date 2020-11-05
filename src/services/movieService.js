@@ -1,23 +1,6 @@
 import MovieModel from "../models/movieModel"
 import UserModel from "../models/userModel";
 
-
-const createMovie = async ({title, description, rentalPrice, salePrice, availability}) => {
-    try{
-        const movie = MovieModel.build({
-            title,
-            description,
-            rentalPrice,
-            salePrice,
-            ...(availability && {availability})
-        })
-        await movie.save()
-        return movie
-    }catch (e){
-        throw e
-    }
-}
-
 /*
 This function takes a string and converts it into an arrangement with two elements so that they can be used in sequelize
  input: -title
@@ -49,35 +32,48 @@ const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'
         ...(attributes && {attributes}),
         ...(filters && {filters})
     }
-    console.log(query)
 
     return await MovieModel.findAll(query)
 }
 
 const getMovie = async (id) => {
-    const movie = await MovieModel.findOne({where: {id}})
-    if (!movie){
-        throw new Error("Movie not found")
-    }
-    return movie
+    let movie = await MovieModel.findOne({where: {id}})
+    return movie ? {value: movie} : {error: "Movie not found"}
 }
+
+
+const createMovie = async ({title, description, rentalPrice, salePrice, availability,}) => {
+
+    const movie = MovieModel.build({
+        title,
+        description,
+        rentalPrice,
+        salePrice,
+        ...(availability && {availability})
+    })
+    await movie.save()
+    return movie
+
+}
+
 
 
 const likeMovie = async (movieId, userId, action="add") => {
     // TODO: improve error handling
     const user = await UserModel.findOne({where: {id: userId}})
-    const movie = await MovieModel.findOne({where: {id: movieId}})
+    if (!user){
+        return {error: "User not found"}
+    }
 
-    if (user === null){
-        throw new Error("User not found")
+    const movie = await MovieModel.findOne({where: {id: movieId}})
+    if (!movie){
+        return {error: "Movie not found"}
     }
-    if (movie === null){
-        throw new Error("Movie not found")
-    }
+
     const change = action === "add" ? await user.addMovie(movie) : await user.removeMovie(movie)
     //if perform removeMovie, change is integer
     //if perform addMovie, change can be object or undefined
-    return !(change === 'undefined' || change === 0)
+    return {value: !(change === 'undefined' || change === 0)}
 
 }
 

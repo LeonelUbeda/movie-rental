@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-const movieSchema = Joi.object({
+export const schema = {
     title: Joi.string()
         .max(100)
         .required(),
@@ -14,6 +14,9 @@ const movieSchema = Joi.object({
     availability: Joi.boolean()
         .default(true)
         .required()
-})
+}
+
+const movieSchema = Joi.object(schema)
+
 
 export default movieSchema
