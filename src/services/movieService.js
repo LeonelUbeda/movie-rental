@@ -34,7 +34,6 @@ function convertToOrderBy(field){
 
 
 const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'}={}) => {
-
     if (Array.isArray(order)){
         order = order.map(element => convertToOrderBy(element))
     }else{
@@ -53,6 +52,14 @@ const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'
     console.log(query)
 
     return await MovieModel.findAll(query)
+}
+
+const getMovie = async (id) => {
+    const movie = await MovieModel.findOne({where: {id}})
+    if (!movie){
+        throw new Error("Movie not found")
+    }
+    return movie
 }
 
 
@@ -77,4 +84,4 @@ const likeMovie = async (movieId, userId, action="add") => {
 likeMovie.ADD = "add"
 likeMovie.REMOVE = "remove"
 
-export default {createMovie, getMovies, likeMovie}
+export default {createMovie, getMovies, getMovie, likeMovie}

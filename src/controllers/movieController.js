@@ -38,10 +38,25 @@ function handlePagination(query, limitDefault= 10, pageDefault = 1){
 
 const getMovies = async (req, res) => {
     const { limit, offset } = handlePagination(req.query)
-
+    //TODO: search
     let movies = await movieService.getMovies({limit, offset})
     movies = filterPropertiesByPermissions(movies, req.user.allowedFields)
     res.json(movies)
+}
+
+const getMovie = async (req, res) => {
+    const { movieId } = req.params
+    try{
+        let movie = await movieService.getMovie(movieId)
+        movie = filterPropertiesByPermissions(movie, req.user.allowedFields)
+        return res.json(movie)
+    }catch (e){
+        res.status(404).send({error: e.message})
+    }
+}
+
+const partialUpdate = async (req, res) => {
+
 }
 
 
@@ -67,4 +82,4 @@ const removeLikeMovie = async (req, res) => {
     }
 }
 
-export default {createMovie, getMovies, likeMovie, removeLikeMovie}
+export default {createMovie, getMovies, getMovie, likeMovie, removeLikeMovie}
