@@ -12,7 +12,7 @@ export const PERMISSION_TYPES = {
 export const SECTION = {
     MOVIE: "movieSection",
     USER: "userSection",
-    USERMOVIELIKE: "userMovieLikeSection"
+    USER_MOVIE_LIKE: "userMovieLikeSection",
 }
 
 //if action permission is not specified, default is false
@@ -60,7 +60,7 @@ export const PERMISSIONS = {
                 [ACTION.MERGE]: true,
                 [ACTION.OTHERS]: true
             },
-            [SECTION.USERMOVIELIKE]: {
+            [SECTION.USER_MOVIE_LIKE]: {
                 [ACTION.MERGE]: true,
                 [ACTION.DELETE]: true
             }
@@ -76,7 +76,7 @@ export const PERMISSIONS = {
                 [ACTION.READ]: ["username", "email", "firstName", "lastName"],
                 [ACTION.UPDATE]: ["password", "firstName", "lastName"],
             },
-            [SECTION.USERMOVIELIKE]: {
+            [SECTION.USER_MOVIE_LIKE]: {
                 [ACTION.MERGE]: true,
                 [ACTION.DELETE]: true
             }

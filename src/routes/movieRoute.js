@@ -10,7 +10,7 @@ router.get('/', permissionsMiddleware(SECTION.MOVIE, ACTION.READ), movieControll
 router.post('/', permissionsMiddleware(SECTION.MOVIE, ACTION.INSERT), movieControllers.createMovie)
 // router.patch('/:movieId', permissionsMiddleware(ENTITIES.MOVIE, ACTION.UPDATE), movieControllers.)
 
-router.put('/:movieId/like', permissionsMiddleware(SECTION.USERMOVIELIKE, ACTION.MERGE), movieControllers.likeMovie)
-router.delete('/:movieId/like', permissionsMiddleware(SECTION.USERMOVIELIKE, ACTION.DELETE), movieControllers.removeLikeMovie)
+router.put('/:movieId/like', permissionsMiddleware(SECTION.USER_MOVIE_LIKE, ACTION.MERGE), movieControllers.likeMovie)
+router.delete('/:movieId/like', permissionsMiddleware(SECTION.USER_MOVIE_LIKE, ACTION.DELETE), movieControllers.removeLikeMovie)
 
 export default router
