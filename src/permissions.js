@@ -70,7 +70,7 @@ export const PERMISSIONS = {
         name: "default",
         models: {
             [SECTION.MOVIE]: {
-                [ACTION.READ]: ["title", "description", "stock", "rentalPrice", "salePrice", "likes"],
+                [ACTION.READ]: ["title", "description", "stock", "rentalPrice", "salePrice", "likes", "id"],
             },
             [SECTION.USER]: {
                 [ACTION.READ]: ["username", "email", "firstName", "lastName"],
@@ -86,7 +86,7 @@ export const PERMISSIONS = {
         name: "Anonymous",
         models: {
             [SECTION.MOVIE]: {
-                read: ["title", "description", "stock", "rentalPrice", "salePrice", "likes"],
+                read: ["title", "description", "stock", "rentalPrice", "salePrice", "likes", "id"],
             },
             [SECTION.USER]: {
                 write: ["username" ,"password", "firstName", "lastName", "password", "email"]
