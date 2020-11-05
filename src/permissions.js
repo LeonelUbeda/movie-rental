@@ -9,19 +9,35 @@ export const PERMISSION_TYPES = {
     ANONYMOUS: "anonymous"
 }
 
-export const ENTITIES = {
-    MOVIE: MovieModel.tableName,
-    USER: UserModel.tableName,
-    USERMOVIELIKE: UserMovieLikeModel.tableName
+export const SECTION = {
+    MOVIE: "movieSection",
+    USER: "userSection",
+    USERMOVIELIKE: "userMovieLikeSection"
 }
 
 //if action permission is not specified, default is false
 export const ACTION = {
+
+    //method: GET
+    //values: Boolean, Array
     READ: "read",
+
+    //method: POST
+    //values: Boolean, Array
     INSERT: "write",
+
+    //method: PATCH
+    // Boolean, Array
     UPDATE: "update",
+
+    //method: DELETE
+    //values: Boolean
     DELETE: "delete",
-    OTHERS: "others"
+    OTHERS: "others",
+
+    //method: PUT
+    //values: Boolean
+    MERGE: "merge"
 }
 
 
@@ -29,50 +45,50 @@ export const PERMISSIONS = {
     [PERMISSION_TYPES.ADMIN]: {
         name: "admin",
         models: {
-            [ENTITIES.MOVIE]: {
-                [ACTION.READ]: "*",
-                [ACTION.INSERT]: "*",
-                [ACTION.UPDATE]: "*",
+            [SECTION.MOVIE]: {
+                [ACTION.READ]: true,
+                [ACTION.INSERT]: true,
+                [ACTION.UPDATE]: true,
+                [ACTION.MERGE]: true,
                 [ACTION.DELETE]: true
             },
-            [ENTITIES.USER]: {
-                [ACTION.READ]: "*",
-                [ACTION.INSERT]: "*",
-                [ACTION.UPDATE]: "*",
+            [SECTION.USER]: {
+                [ACTION.READ]: true,
+                [ACTION.INSERT]: true,
+                [ACTION.UPDATE]: true,
                 [ACTION.DELETE]: true,
+                [ACTION.MERGE]: true,
                 [ACTION.OTHERS]: true
             },
-            [ENTITIES.USERMOVIELIKE]: {
-                // Its * because a like is linked if or if to the user's session, it does not receive any field
-                [ACTION.UPDATE]: "*",
-                [ACTION.DELETE]: "*"
+            [SECTION.USERMOVIELIKE]: {
+                [ACTION.MERGE]: true,
+                [ACTION.DELETE]: true
             }
         }
     },
     [PERMISSION_TYPES.DEFAULT]: {
         name: "default",
         models: {
-            [ENTITIES.MOVIE]: {
+            [SECTION.MOVIE]: {
                 [ACTION.READ]: ["title", "description", "stock", "rentalPrice", "salePrice", "likes"],
             },
-            [ENTITIES.USER]: {
+            [SECTION.USER]: {
                 [ACTION.READ]: ["username", "email", "firstName", "lastName"],
                 [ACTION.UPDATE]: ["password", "firstName", "lastName"],
             },
-            [ENTITIES.USERMOVIELIKE]: {
-                // It is true because a like is linked if or if to the user's session, it does not receive any field
-                [ACTION.UPDATE]: "*",
-                [ACTION.DELETE]: "*"
+            [SECTION.USERMOVIELIKE]: {
+                [ACTION.MERGE]: true,
+                [ACTION.DELETE]: true
             }
         }
     },
     [PERMISSION_TYPES.ANONYMOUS]: {
         name: "Anonymous",
         models: {
-            [ENTITIES.MOVIE]: {
+            [SECTION.MOVIE]: {
                 read: ["title", "description", "stock", "rentalPrice", "salePrice", "likes"],
             },
-            [ENTITIES.USER]: {
+            [SECTION.USER]: {
                 write: ["username" ,"password", "firstName", "lastName", "password", "email"]
             }
         }
