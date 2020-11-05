@@ -96,7 +96,7 @@ export const PERMISSIONS = {
 }
 
 export const filterPropertiesByPermissions = (elements, allowedFields) => {
-    if (allowedFields === '*'){
+    if (allowedFields === true){
         return elements
     }
     if (Array.isArray(elements)){
