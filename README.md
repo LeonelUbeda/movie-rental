@@ -99,3 +99,26 @@ DELETE
 /movie/1/items/2
 ```
 These operations will increase or decrease the stock and availableStock counters in the Movie model. 
+In the sql script attached to the repository, there is some test data, among them are the following accounts:
+
+```
+role: admin
+username: admin
+email: admin@admin.com
+password: Admin1000
+```
+
+```
+role: default
+username: Leonel
+password: Leonel1000
+email: leonel@leonel.com
+```
+
+```
+role: default
+username: carlos
+password: Carlos1000
+email: carlos@carlos.com
+```
+
