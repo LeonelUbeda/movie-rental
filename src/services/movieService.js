@@ -64,6 +64,13 @@ const updateMovie = async (id, newData) => {
     return await movie.update(newData)
 }
 
+const deleteMovie = async (id) => {
+    let { error, value: movie} = await getMovie(id)
+    if (error){
+        return error
+    }
+    await movie.delete()
+}
 
 const likeMovie = async (movieId, userId, action="add") => {
     // TODO: improve error handling
@@ -87,4 +94,4 @@ const likeMovie = async (movieId, userId, action="add") => {
 likeMovie.ADD = "add"
 likeMovie.REMOVE = "remove"
 
-export default {createMovie, getMovies, getMovie, updateMovie, likeMovie}
+export default {createMovie, getMovies, getMovie, updateMovie, deleteMovie, likeMovie}

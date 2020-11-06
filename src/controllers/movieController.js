@@ -117,10 +117,15 @@ const partialMovieUpdate = async (req, res) => {
         return res.send(500).json({message: ERROR.SERVER_ERROR})
     }
 
+}
 
-
-
-
+const deleteMovie = async (req, res) => {
+    const { movieId } = req.params
+    const {error, value: movie} = await movieService.deleteMovie(movieId)
+    if(error){
+        return res.status(404).json({message: error})
+    }
+    return res.status(204).send()
 }
 
 
@@ -154,4 +159,4 @@ const removeLikeMovie = async (req, res) => {
     }
 }
 
-export default {createMovie, getMovies, getMovie, partialMovieUpdate, likeMovie, removeLikeMovie}
+export default {createMovie, getMovies, getMovie, partialMovieUpdate, likeMovie, removeLikeMovie, deleteMovie}
