@@ -62,3 +62,18 @@ The possible valid values would be an array of fields that user have allowed, a 
 The project has authentication services, users, movies and movie items.
 The service layer provides a small system of error messages, commonly for 404 errors. When invoked, they return an object with two possible values, "error" and "value". Error is the message coming from the service
 Sometimes it is necessary to perform some side effects in the service layers, for this we use events.
+
+
+###movie endpoint
+you can sort by the fields your role is allowed. Example
+```
+/movies?sort=rentalPrice
+```
+you can also perform filtering. Example:
+```
+/movies?rentalPrice=50
+/movies?rentalPrice__lte=50
+/movies?rentalPrice__gte=30
+/movie?title__substring=Trial
+```
+btw, __substring is case sensitive
