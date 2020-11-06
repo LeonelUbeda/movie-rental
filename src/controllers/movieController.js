@@ -1,45 +1,14 @@
 import movieValidator, { schema } from '../validators/movieValidator'
 import movieService from '../services/movieService'
 import {filterPropertiesByPermissions, filterSearchByPermissions } from "../permissions";
-
-
+import filtering from '../utils/filtering'
+import pagination  from '../utils/pagination'
 
 const ERROR = {
     BAD_REQUEST: "Bad request",
     SERVER_ERROR: "Internal server error"
 }
 
-function handlePagination(query, limitDefault= 10, pageDefault = 1){
-
-    let { limit, page } = query
-    limit = isNaN(parseInt(limit)) ?  limitDefault : parseInt(limit)
-    page = isNaN(parseInt(page)) ? pageDefault : parseInt(page)
-
-    // to avoid negative offset
-    page = page <= 1 ? pageDefault : page
-
-    return {limit, offset: limit * (page - 1)}
-}
-
-function cleanSort(sort, allowedFields, defaultValue="title"){
-
-    function compare(item){
-        return (
-            (item[0] === '-' && allowedFields.indexOf(item.substring(1)) > -1) ||
-            allowedFields.indexOf(item) > -1
-        )
-    }
-    if (allowedFields === true){
-        return sort
-    }
-    //TODO: refactor this pls
-    if (typeof sort === 'string'){
-        return compare(sort) ? sort : defaultValue
-    }else if (Array.isArray(sort)){
-        let cleaned = sort.filter(e => compare(e))
-        return cleaned.length > 0 ? cleaned : defaultValue
-    }
-}
 
 /* -----------  READ ---------- */
 const getMovies = async (req, res) => {
@@ -47,10 +16,10 @@ const getMovies = async (req, res) => {
 
         //just cleaning sort
         let {sort="title"} = req.query;
-        sort = cleanSort(sort, req.user.allowedFields, "title")
+        sort = filtering.cleanSort(sort, req.user.allowedFields, "title")
 
         let filters = filterSearchByPermissions(req.query, req.user.allowedFields, "__")
-        const { limit, offset } = handlePagination(req.query)
+        const { limit, offset } = pagination.handlePagination(req.query)
 
         //if user dont have permissions to availability field, lets add a filter: availability=true
         if (Array.isArray(req.user.allowedFields)){
@@ -74,7 +43,7 @@ const getMovies = async (req, res) => {
         res.json(movies)
 
     }catch (e){
-        console.log(e.message)
+        console.log(e)
         res.status(500).json({message: ERROR.SERVER_ERROR})
     }
 }
