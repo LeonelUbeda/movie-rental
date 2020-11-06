@@ -12,7 +12,7 @@ const deserializeSession = async (req, res, next) => {
             anonymousUser = false
 
             //just in case
-            const permissions = PERMISSIONS[tokenData.role].models ?? PERMISSIONS[PERMISSION_TYPES.DEFAULT].models
+            const permissions = PERMISSIONS[tokenData.role].permissions ?? PERMISSIONS[PERMISSION_TYPES.DEFAULT].permissions
             req.user = {
                 ...tokenData,
                 isAuthenticated: true,
@@ -25,7 +25,7 @@ const deserializeSession = async (req, res, next) => {
 
         req.user = {
             isAuthenticated: false,
-            permissions: PERMISSIONS[PERMISSION_TYPES.ANONYMOUS].models
+            permissions: PERMISSIONS[PERMISSION_TYPES.ANONYMOUS].permissions
         }
     }
     next()

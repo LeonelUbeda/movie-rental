@@ -67,6 +67,7 @@ export const PERMISSIONS = {
                 [ACTION.DELETE]: true
             },
             [SECTION.MOVIE_ITEMS]: {
+                [ACTION.READ]: true,
                 [ACTION.INSERT]: true,
                 [ACTION.DELETE]: true
             }

@@ -29,7 +29,9 @@ function cleanSort(sort, allowedFields, defaultValue="title"){
             allowedFields.indexOf(item) > -1
         )
     }
-
+    if (allowedFields === true){
+        return sort
+    }
     //TODO: refactor this pls
     if (typeof sort === 'string'){
         return compare(sort) ? sort : defaultValue
@@ -49,6 +51,14 @@ const getMovies = async (req, res) => {
 
         let filters = filterSearchByPermissions(req.query, req.user.allowedFields, "__")
         const { limit, offset } = handlePagination(req.query)
+
+        //if user dont have permissions to availability field, lets add a filter: availability=true
+        if (Array.isArray(req.user.allowedFields)){
+            if (req.user.allowedFields.indexOf('availability') === -1){
+                filters.availability = true
+            }
+
+        }
 
         //filtering
         let movieQuery = {
@@ -71,6 +81,7 @@ const getMovies = async (req, res) => {
 
 const getMovie = async (req, res) => {
     const { movieId } = req.params
+    //TODO: if user dont have permissions to availability, send 403
     try{
         let {error, value: movie } = await movieService.getMovie(movieId)
 
