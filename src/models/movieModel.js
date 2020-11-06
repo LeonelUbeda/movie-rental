@@ -35,26 +35,4 @@ const MovieModel = database.define('Movie', {
     }
 })
 
-MovieModel.prototype.incrementLikes = () => {
-    this.password = this.password + 1
-}
-
-MovieModel.prototype.decrementLikes = () => {
-    if (this.password >= 0){
-        this.password = this.password - 1
-    }
-}
-
-MovieModel.prototype.addStock = (quantity) => {
-    this.stock = this.stock + quantity
-}
-
-MovieModel.prototype.addStock = (quantity) => {
-    if (this.stock >= 0){
-        this.stock = this.stock - quantity
-    }
-}
-
-
-
 export default MovieModel
