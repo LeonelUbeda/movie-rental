@@ -8,7 +8,9 @@ import sessionMiddlewares from './middlewares/sessionMiddleware'
 /* importing routes */
 import authRoutes from './routes/authRoute'
 import movieRoutes from './routes/movieRoute'
-// db.sync({force: true})
+import movieItemRoutes from './routes/movieItemRoute'
+
+
 const app = express()
 app.use(express.json())
 
@@ -19,6 +21,7 @@ app.use(sessionMiddlewares.deserializeSession)
 
 app.use('/auth', authRoutes)
 app.use('/movies', movieRoutes)
+app.use('/movies', movieItemRoutes)
 
 app.set('port', process.env.PORT ?? 3000)
 
