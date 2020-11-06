@@ -22,10 +22,10 @@ async function createUser({username, firstName, lastName, email, password, role}
             }
         }
         const user = UserModel.build({
-            username,
+            username: username.toLowerCase(),
             firstName,
             lastName,
-            email,
+            email: email.toLowerCase(),
             password,
             role
         })

@@ -11,6 +11,10 @@ const ERROR = {
 
 
 /* -----------  READ ---------- */
+
+//if user is admin and make ?sort=fieldThatDoesNotExist
+//will throw a server error. This only happens when you user is an administrator
+//If you are a default user, the sort will be ignored only if the field does not exist or you do not have permissions.
 const getMovies = async (req, res) => {
     try{
 
@@ -18,8 +22,17 @@ const getMovies = async (req, res) => {
         let {sort="title"} = req.query;
         sort = filtering.cleanSort(sort, req.user.allowedFields, "title")
 
-        let filters = filterSearchByPermissions(req.query, req.user.allowedFields, "__")
         const { limit, offset } = pagination.handlePagination(req.query)
+
+        //Due to the permission design, we have to do this if user is admin
+        delete req.query.limit
+        delete req.query.offset
+
+
+        let filters = filterSearchByPermissions(req.query, req.user.allowedFields, "__")
+
+
+
 
         //if user dont have permissions to availability field, lets add a filter: availability=true
         if (Array.isArray(req.user.allowedFields)){
@@ -72,7 +85,7 @@ const createMovie = async (req, res) => {
     // If the user does not have permission to modify a field and that field is required, the default value of the validator is used
     // for example, default value for movie.availability is true
     const { value , error } = movieValidator.validate(data, {abortEarly: false})
-
+    console.log(value)
     if (!error){
         try{
             const movie = await movieService.createMovie(value)

@@ -17,20 +17,19 @@ const signIn = async (req, res) => {
     const { value , error } = userValidator.validate(data, {abortEarly: false})
     console.log(value.role)
     if(error){
-        console.log("error", error.details)
-        res.status(400).json({error: "error"})
+        let errors = error.details.map(e => e.message)
+        return res.status(400).json({message: "Bad request",errors})
     }
     try{
-        console.log(value)
         let user = await userService.createUser(value)
         user = filterPropertiesByPermissions(user, req.user.allowedFields)
         //Delete password from the response, refactor this later
         delete user.password
 
-        res.json(user)
+        return res.json(user)
     }catch (error) {
         console.log(error)
-        res.status(400).json({error: error.message})
+        return res.status(400).json({error: error.message})
     }
 }
 

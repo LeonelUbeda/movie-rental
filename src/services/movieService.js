@@ -64,14 +64,13 @@ const getMovie = async (id) => {
 }
 
 
-const createMovie = async ({title, description, rentalPrice, salePrice, availability,}) => {
-
+const createMovie = async ({title, description, rentalPrice, salePrice, availability}) => {
     const movie = MovieModel.build({
         title,
         description,
         rentalPrice,
         salePrice,
-        ...(availability && {availability})
+        ... typeof availability === 'boolean' && {availability},
     })
     await movie.save()
     return movie
