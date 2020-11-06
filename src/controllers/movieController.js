@@ -96,9 +96,13 @@ const partialMovieUpdate = async (req, res) => {
         let errors = []
         for (let prop in data){
             //validating each prop of data object
-            const { error: validationError } = schema[prop]?.validate(data[prop])
+            const { error: validationError } = schema[prop]?.validate(data[prop]) ?? {}
             if (validationError){
-                errors.push(...validationError.details.map(e => e.message))
+                console.log(validationError)
+                //e.message is "\"value\" must be a integer
+                //so we split and use the "mus be a integer" and concatenate with prop name
+                //so now is: rentalPrice must be a integer
+                errors.push(...validationError.details.map(e => prop + e.message.split(`"`)[2]))
             }
         }
         if (errors.length > 0){
@@ -114,16 +118,22 @@ const partialMovieUpdate = async (req, res) => {
 
 
     }catch (e) {
-        return res.send(500).json({message: ERROR.SERVER_ERROR})
+        console.log(e)
+        return res.status(500).json({message: ERROR.SERVER_ERROR})
     }
 
 }
 
 const deleteMovie = async (req, res) => {
     const { movieId } = req.params
-    const {error, value: movie} = await movieService.deleteMovie(movieId)
-    if(error){
-        return res.status(404).json({message: error})
+    try{
+        const {error, value: movie} = await movieService.deleteMovie(movieId)
+        if(error){
+            return res.status(404).json({message: error})
+        }
+        return res.status(204).send()
+    }catch (e) {
+        res.status(500).json({message: ERROR.SERVER_ERROR})
     }
     return res.status(204).send()
 }

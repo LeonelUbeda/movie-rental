@@ -59,9 +59,10 @@ const createMovie = async ({title, description, rentalPrice, salePrice, availabi
 const updateMovie = async (id, newData) => {
     let { error, value: movie } = await getMovie(id)
     if (error){
-        return error
+        return {error}
     }
-    return await movie.update(newData)
+    await movie.update(newData)
+    return {}
 }
 
 const deleteMovie = async (id) => {
