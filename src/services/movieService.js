@@ -1,5 +1,6 @@
 import MovieModel from "../models/movieModel"
 import UserModel from "../models/userModel";
+import {Op} from "sequelize";
 
 /*
 This function takes a string and converts it into an arrangement with two elements so that they can be used in sequelize
@@ -14,6 +15,28 @@ function convertToOrderBy(field){
     }
 }
 
+function handleFilters(query, defaults={}) {
+    const validOperators = [
+        "gte",
+        "lte",
+        "like",
+        "substring"
+    ]
+
+    let filter = {}
+
+    for (const prop in query){
+        let [filterField, filterOperator] = prop.split("__")
+        if (filterOperator && validOperators.indexOf(filterOperator) > -1){
+            filter[filterField] = {
+                [Op[filterOperator]]: query[prop]
+            }
+        }else{
+            filter[filterField] = query[prop]
+        }
+    }
+    return filter
+}
 
 
 const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'}={}) => {
@@ -24,15 +47,14 @@ const getMovies = async ({attributes, limit=20, offset=0, filters, order='title'
         //sequelize expects an array of arrays, so...
         order = [convertToOrderBy(order)]
     }
-
+    filters = handleFilters(filters)
     let query = {
         limit,
         offset,
         order,
         ...(attributes && {attributes}),
-        ...(filters && {filters})
+        ...(filters && {where: filters})
     }
-
     return await MovieModel.findAll(query)
 }
 

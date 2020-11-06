@@ -1,7 +1,7 @@
 import movieValidator, { schema } from '../validators/movieValidator'
 import movieService from '../services/movieService'
-import {filterPropertiesByPermissions} from "../permissions";
-import Joi from 'joi';
+import {filterPropertiesByPermissions, filterSearchByPermissions } from "../permissions";
+
 
 
 const ERROR = {
@@ -21,16 +21,50 @@ function handlePagination(query, limitDefault= 10, pageDefault = 1){
     return {limit, offset: limit * (page - 1)}
 }
 
+function cleanSort(sort, allowedFields, defaultValue="title"){
+
+    function compare(item){
+        return (
+            (item[0] === '-' && allowedFields.indexOf(item.substring(1)) > -1) ||
+            allowedFields.indexOf(item) > -1
+        )
+    }
+
+    //TODO: refactor this pls
+    if (typeof sort === 'string'){
+        return compare(sort) ? sort : defaultValue
+    }else if (Array.isArray(sort)){
+        let cleaned = sort.filter(e => compare(e))
+        return cleaned.length > 0 ? cleaned : defaultValue
+    }
+}
 
 /* -----------  READ ---------- */
 const getMovies = async (req, res) => {
     try{
+
+        //just cleaning sort
+        let {sort="title"} = req.query;
+        sort = cleanSort(sort, req.user.allowedFields, "title")
+
+        let filters = filterSearchByPermissions(req.query, req.user.allowedFields, "__")
         const { limit, offset } = handlePagination(req.query)
-        //TODO: search
-        let movies = await movieService.getMovies({limit, offset})
-        movies = filterPropertiesByPermissions(movies, req.user.allowedFields)
+
+        //filtering
+        let movieQuery = {
+            limit,
+            offset,
+            order: sort,
+            filters,
+            //if allowedFields equals true, dont need attributes
+            ...(!(req.user.allowedFields === true) && {attributes: req.user.allowedFields})
+        }
+
+        let movies = await movieService.getMovies(movieQuery)
         res.json(movies)
+
     }catch (e){
+        console.log(e.message)
         res.status(500).json({message: ERROR.SERVER_ERROR})
     }
 }
@@ -149,6 +183,7 @@ const likeMovie = async (req, res) => {
             res.status(404).json({message: error})
         }
     }catch (e){
+        console.log(e)
         res.status(500).json({message: ERROR.SERVER_ERROR})
     }
 }
@@ -164,6 +199,7 @@ const removeLikeMovie = async (req, res) => {
             res.status(404).json({message: error})
         }
     }catch (e){
+        console.log(e.message)
         res.status(500).json({message: ERROR.SERVER_ERROR})
     }
 }

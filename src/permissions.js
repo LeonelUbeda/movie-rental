@@ -86,7 +86,7 @@ export const PERMISSIONS = {
         name: "Anonymous",
         models: {
             [SECTION.MOVIE]: {
-                read: ["title", "description", "stock", "rentalPrice", "salePrice", "likes", "id"],
+                read: ["title", "description", "stock", "salePrice", "likes", "id"],
             },
             [SECTION.USER]: {
                 write: ["username" ,"password", "firstName", "lastName", "password", "email"]
@@ -95,7 +95,8 @@ export const PERMISSIONS = {
     }
 }
 
-export const filterPropertiesByPermissions = (elements, allowedFields) => {
+
+export const filterPropertiesByPermissions = (elements, allowedFields, separator=null, invert_separator=false) => {
     if (allowedFields === true){
         return elements
     }
@@ -121,4 +122,26 @@ export const filterPropertiesByPermissions = (elements, allowedFields) => {
     }
 }
 
+//separator only works if elements is object type
+//If separator=true then checks will be made for elements that contain field__operator.
+//for example rentalPrice__lge
+export const filterSearchByPermissions = (elements, allowedFields, separator="__") => {
+    if (allowedFields === true){
+        return elements
+    }
+    let serializedElement = {}
+    for (const field in elements){
+        let [fieldName, filterOperator] = field.split(separator)
 
+        if (
+            //If the field does not have a separator and exists in allowedFields
+            (!filterOperator && allowedFields.indexOf(field) > -1) ||
+            //If have a separator and if fieldName exists in allowedFields
+            (allowedFields.indexOf(fieldName) > -1)
+        ){
+            serializedElement[field] = elements[field]
+        }
+    }
+    // console.log(serializedElement)
+    return serializedElement
+}
