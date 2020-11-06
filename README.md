@@ -77,3 +77,25 @@ you can also perform filtering. Example:
 /movie?title__substring=Trial
 ```
 btw, __substring is case sensitive
+
+for like and remove like to movie
+
+```
+PUT
+/movies/1/like
+
+DELETE
+/movie/1/like
+```
+These operations will increase or decrease the likes counter in the Movie model. 
+
+
+Add and remove item to movie stock
+```
+POST
+/movie/1/items
+
+DELETE
+/movie/1/items/2
+```
+These operations will increase or decrease the stock and availableStock counters in the Movie model. 
