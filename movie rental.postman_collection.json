@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "6da988da-5e3b-45c8-9859-3cd041b890af",
+		"name": "movie rental",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "SignIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Carlos\",\r\n    \"password\": \"Carlos1000\",\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Carlos\",\r\n    \"email\": \"Carlos@Carlos.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogIn",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "asdasdadadasd",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"admin@admin.com\",\r\n    \"password\": \"Admin1000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "movies",
+			"item": [
+				{
+					"name": "items",
+					"item": [
+						{
+							"name": "Add item to movie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/movies/1/items",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"movies",
+										"1",
+										"items"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "create movie",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Asur: Welcome to Your Dark Side\",\r\n    \"description\": \"A unique crime thriller that pits two opposing worlds against each other. The less explored, intricate world of forensic science and the deep mysticism of ancient Indian Mythology.\",\r\n    \"rentalPrice\": 20.99,\r\n    \"salePrice\": 99.99,\r\n    \"availability\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/movies",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listing movies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/movies/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsZW9uZWxAbGVvbmVsLmNvbSIsInVzZXJuYW1lIjoibGVvbmUiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDQzOTMzMDUsImV4cCI6MTYwNDk5ODEwNX0.Pu73URbJPcRC09L2f0C1vEBQTrWPZeOlm4j4oGaQ8lc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/movies/1/like",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies",
+								"1",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove like movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsZW9uZWxAbGVvbmVsLmNvbSIsInVzZXJuYW1lIjoibGVvbmUiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDQzOTMzMDUsImV4cCI6MTYwNDk5ODEwNX0.Pu73URbJPcRC09L2f0C1vEBQTrWPZeOlm4j4oGaQ8lc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/movies/1/like",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies",
+								"1",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update movie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJsZW9uZWxAbGVvbmVsLmNvbSIsInVzZXJuYW1lIjoibGVvbmUiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2MDQ1MTQ3OTEsImV4cCI6MTYwNTExOTU5MX0.O3r2cxBq8BZUhLR0-jp4tLxEDgQkCVc6AijZrdoVk4Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"availability\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/movies/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies",
+								"2"
+							]
+						},
+						"description": "Update movie"
+					},
+					"response": []
+				},
+				{
+					"name": "Detail movie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/movies/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete movie",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/movies/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"movies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b39e79d1-e219-4b34-8bea-b0420f20c8a5",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4cb183b-9d20-4c4d-8cb4-16291d27e8bd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{JWT}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{JWT}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "08f926ff-06f7-4183-8e7c-a8a6899150f5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "822de016-e72e-4036-aed3-9618813342a3",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "8acdf263-fdab-4d54-8857-16e3911aa6e3",
+			"key": "base_url",
+			"value": "127.0.0.1:5051"
+		},
+		{
+			"id": "33d8f00d-8a8e-4c51-98e2-ad70d910ee14",
+			"key": "JWT",
+			"value": ""
+		}
+	],
+	"protocolProfileBehavior": {}
+}
