@@ -11,8 +11,10 @@ export const PERMISSION_TYPES = {
 
 export const SECTION = {
     MOVIE: "movieSection",
+    MOVIE_ITEMS: "movieItems",
     USER: "userSection",
     USER_MOVIE_LIKE: "userMovieLikeSection",
+
 }
 
 //if action permission is not specified, default is false
@@ -44,7 +46,7 @@ export const ACTION = {
 export const PERMISSIONS = {
     [PERMISSION_TYPES.ADMIN]: {
         name: "admin",
-        models: {
+        permissions: {
             [SECTION.MOVIE]: {
                 [ACTION.READ]: true,
                 [ACTION.INSERT]: true,
@@ -63,12 +65,16 @@ export const PERMISSIONS = {
             [SECTION.USER_MOVIE_LIKE]: {
                 [ACTION.MERGE]: true,
                 [ACTION.DELETE]: true
+            },
+            [SECTION.MOVIE_ITEMS]: {
+                [ACTION.INSERT]: true,
+                [ACTION.DELETE]: true
             }
         }
     },
     [PERMISSION_TYPES.DEFAULT]: {
         name: "default",
-        models: {
+        permissions: {
             [SECTION.MOVIE]: {
                 [ACTION.READ]: ["title", "description", "stock", "rentalPrice", "salePrice", "likes", "id"],
             },
@@ -84,12 +90,12 @@ export const PERMISSIONS = {
     },
     [PERMISSION_TYPES.ANONYMOUS]: {
         name: "Anonymous",
-        models: {
+        permissions: {
             [SECTION.MOVIE]: {
-                read: ["title", "description", "stock", "salePrice", "likes", "id"],
+                [ACTION.READ]: ["title", "description", "stock", "salePrice", "likes", "id"],
             },
             [SECTION.USER]: {
-                write: ["username" ,"password", "firstName", "lastName", "password", "email"]
+                [ACTION.INSERT]: ["username" ,"password", "firstName", "lastName", "password", "email"]
             }
         }
     }
