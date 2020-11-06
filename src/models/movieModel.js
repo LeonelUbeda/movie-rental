@@ -17,6 +17,10 @@ const MovieModel = database.define('Movie', {
         allowNull: true,
         defaultValue: 0
     },
+    availableStock: {
+        type: DataTypes.INTEGER(),
+        defaultValue: 0
+    },
     rentalPrice: {
         type: DataTypes.FLOAT,
         allowNull: false
@@ -29,6 +33,7 @@ const MovieModel = database.define('Movie', {
         type: DataTypes.FLOAT,
         allowNull: false
     },
+
     availability: {
         type: DataTypes.BOOLEAN,
         defaultValue: true

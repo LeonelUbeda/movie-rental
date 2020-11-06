@@ -86,14 +86,64 @@ const likeMovie = async (movieId, userId, action="add") => {
         return {error: "Movie not found"}
     }
 
-    const change = action === "add" ? await user.addMovie(movie) : await user.removeMovie(movie)
-    //if perform removeMovie, change is integer
-    //if perform addMovie, change can be object or undefined
-    return {value: !(change === 'undefined' || change === 0)}
+    let change;
+    if (action === "add"){
+        change = await user.addMovie(movie)
+        //TODO: move the LIKES logic to another service
+
+        //if perform addMovie, change can be object or undefined
+        if (typeof change !== 'undefined'){
+            await MovieModel.increment('likes', {where: {id: movie.id}})
+        }
+
+        return {value: typeof change !== 'undefined'}
+    }else{
+        change = await user.removeMovie(movie)
+
+        //if perform removeMovie, change is a number
+        if (change > 0){
+            await MovieModel.decrement('likes', {where: {id: movie.id}})
+        }
+        return {value: change > 0}
+    }
 
 }
 
 likeMovie.ADD = "add"
 likeMovie.REMOVE = "remove"
 
-export default {createMovie, getMovies, getMovie, updateMovie, deleteMovie, likeMovie}
+const addStock = async (movieId, quantity=1) => {
+    return await MovieModel.increment('stock', {by: quantity, where: {id: movieId}})
+}
+
+const removeStock = async (movieId, quantity=1) => {
+    return await  MovieModel.decrement('stock', {by: quantity, where: {id: movieId}})
+}
+
+const addAvailableStock = async (movieId, quantity=1) => {
+    return await MovieModel.increment('availableStock', {by: quantity, where: {id: movieId}})
+}
+
+const removeAvailableStock = async (movieId, quantity=1) => {
+    return await MovieModel.decrement('availableStock', {by: quantity, where: {id: movieId}})
+}
+
+
+export default {
+    createMovie,
+    getMovies,
+    getMovie,
+    updateMovie,
+
+    //Likes management
+    deleteMovie,
+    likeMovie,
+
+    //Stock management
+    addStock,
+    removeStock,
+
+    //AvailableStock management
+    addAvailableStock,
+    removeAvailableStock
+}
