@@ -70,7 +70,8 @@ const deleteMovie = async (id) => {
     if (error){
         return error
     }
-    await movie.delete()
+    await movie.destroy()
+    return {}
 }
 
 const likeMovie = async (movieId, userId, action="add") => {
